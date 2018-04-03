@@ -12,21 +12,22 @@ end
 class Login
     attr_accessor :email, :password
  
-    def initialize(email)        
+    def initialize      
         $driver = Selenium::WebDriver.for :chrome
         $driver.navigate.to "https://login.assetpanda.com/asset_items"
-        @email = email
         @login_element = $driver.find_element(name: 'user[email]')
         @password_element = $driver.find_element(name: 'user[password]')
         @submit_element = $driver.find_element(name: "commit")               
     end
 
-    def login
-        password = File.readlines 'passwords.txt'
-        password.each_with_index{|line, i| puts "#{i+1}: #{line}"}
-        @login_element.send_keys @email
-        puts "The password we are using is #{password}"
-        @password_element.send_keys password
+    def login_system (email,password)
+        @password_from_file = File.readlines 'passwords.txt'
+        @password_from_file.each_with_index{|line, i| puts "#{i+1}: #{line}"}
+        @email = email
+        @password = password
+        
+        @password_element.send_keys @password
+        @login_element.send_keys email
         @submit_element.submit
     end
 
