@@ -3,7 +3,6 @@ require_relative 'login.rb'
 require 'fox16'
 include Fox
 
-
 #initialize the chrome view, gui, and controllers for a few things
 asset_controller = Asset.new
 application = FXApp.new("FXRuby", "FoxTest")
@@ -57,12 +56,18 @@ end
 
 
 
-#The login button=========================================================
+#The login button, if no credentials entered load credentials from email.txt and passwords.txt
 login_button = FXButton.new(frame4, "Login", nil, application, FXApp::ID_QUIT)
 login_button.connect(SEL_COMMAND)do
     login_controller = Login.new
-    login_controller.login_system($account_email,$password_full,true)
-end
+    if $password_full == nil
+        #puts "No value in password_full found, the password value was #{$password_full} "
+        login_controller.login_system($account_email,$password_full,true)
+    else
+        #puts "There was a value found in password_full of: #{$password_full}"
+        login_controller.login_system($account_email,$password_full,false)
+    end
+    end
 #=========================================================================
 
 
@@ -87,7 +92,11 @@ check_out_button.connect(SEL_COMMAND)do
 end
 
 
-delete_asset_button = FXButton.new(frame2, "Delete Asset", nil, application, FXApp::ID_QUIT)
+delete_asset_button = FXButton.new(frame2, "Reset Password", nil, application, FXApp::ID_QUIT)
+delete_asset_button.connect(SEL_COMMAND)do
+    login_controller = Login.new
+    login_controller.reset_password
+end
 change_group_button = FXButton.new(frame2, "Change Group", nil, application, FXApp::ID_QUIT)
 #===========================================================================
 

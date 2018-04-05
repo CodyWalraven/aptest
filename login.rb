@@ -11,21 +11,25 @@ class Login
         @submit_element = $driver.find_element(name: "commit")               
     end
 
+    #If no credentials entered this loads them from email.txt and passwords.txt
     def login_system (email,password,load_from_file)
         if load_from_file == true
             @password_from_file = File.readlines 'passwords.txt'
             @password_from_file.each_with_index{|line, i| puts "#{i+1}: #{line}"}
             @email_from_file = File.readlines 'email.txt'
             @email_from_file.each_with_index{|line,i| puts "#{i+1}: #{line}"}
+            @email_for_password_reset = @email_from_file
             @login_element.send_keys @email_from_file
             @password_element.send_keys @password_from_file
             @submit_element.submit
+            
 
-        elsif load_from_file = false    
+        elsif load_from_file == false    
             @email = email
             @password = password
+            @email_for_password_reset = password
             @password_element.send_keys @password
-            @login_element.send_keys email
+            @login_element.send_keys @email
             @submit_element.submit
         
         else
@@ -34,7 +38,12 @@ class Login
     end
 
     def reset_password
-        @reset_link = $driver.find_element(name: '')
+        $driver.navigate.to "https://login.assetpanda.com/users/password/new"
+        @reset_password_text_box = $driver.find_element(name: 'user[email]')
+        @reset_password_text_box.send_keys @email_for_password_reset
+        @not_a_robot_button = $driver.find_element(name: 'recaptcha-checkbox-checkmark')
+        @not_a_robot_button.submit
+       
     end
 
 end
