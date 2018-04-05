@@ -14,3 +14,5 @@ Automated asset panda testing with selenium.
 5. Install the fxruby gem with "gem install fxruby"
 
 4. Run main.rb
+
+5. P
