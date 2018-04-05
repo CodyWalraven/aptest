@@ -2,9 +2,14 @@ require "selenium-webdriver"
 
 
 #random wait method for now, will put in class later
-def wait (time)
-    $wait = Selenium::WebDriver::Wait.new(:timeout => time)    
-    puts "Alright we just waited #{time} seconds"
+
+class TimeCop
+
+    def wait (time)
+        @wait = Selenium::WebDriver::Wait.new(:timeout => time)    
+        puts "Alright we just waited #{time} seconds"
+    end
+
 end
 
 
@@ -59,13 +64,30 @@ class Asset
         name_field.send_keys(name)   
     end
 
-    def press_save_button
+    def save
         #This really just presses enter, but eh it saves the item
         $driver.action.send_keys(:enter).perform
     
     end
 
         
+end
+
+
+class StrawPoll
+    def initialize
+        $driver = Selenium::WebDriver.for :chrome
+    end
+
+    def navigate_to
+        $driver.navigate.to "https://www.poll-maker.com/poll1921682x73c44DB0-53#"
+    end
+
+    def click_yes
+        yes_field = $driver.find_element(name: 'qp_v1921682')
+        yes_field.submit
+      
+    end
 end
 
 =begin

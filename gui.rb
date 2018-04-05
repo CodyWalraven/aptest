@@ -2,13 +2,37 @@ require_relative 'main.rb'
 require 'fox16'
 include Fox
 
-login_controller = Login.new
+strawpoll = StrawPoll.new
+
+
+#initialize the chrome view, gui, and controllers for a few things
+asset_controller = Asset.new
 application = FXApp.new("FXRuby", "FoxTest")
+
+#Load the image and set to display as logo
+def getIcon(filename)
+    begin
+      filename = File.join("icons", filename)
+      icon = nil
+      File.open(filename, "rb") do |f|
+        icon = FXPNGIcon.new(getApp(), f.read)
+      end
+      icon
+    rescue
+      raise RuntimeError, "Couldn't load icon: #{filename}"
+    end
+end
+
+   
+
+
 main = FXMainWindow.new(application, "Asset Panda automated testing suite", nil, nil, DECOR_ALL,
        0, 0, 500, 300)
 
 
-#Account Email Button===================================================
+
+
+# Account Email Button===================================================
 frame3 = FXHorizontalFrame.new(main,
     LAYOUT_LEFT | LAYOUT_SIDE_TOP| PACK_UNIFORM_WIDTH|FRAME_GROOVE)
 account_val= FXDataTarget.new("Account Name")
@@ -30,10 +54,13 @@ password_val.connect(SEL_COMMAND)do
 end
 #=========================================================================
 
+
+
 #The login button=========================================================
 login_button = FXButton.new(frame4, "Login", nil, application, FXApp::ID_QUIT)
 login_button.connect(SEL_COMMAND)do
-login_controller.login_system($account_email,$password_full)
+    login_controller = Login.new
+    login_controller.login_system($account_email,$password_full)
 end
 #=========================================================================
 
@@ -42,10 +69,28 @@ end
 #Buttons to control stuff=================================================
 frame2 = FXHorizontalFrame.new(main,
             LAYOUT_LEFT | LAYOUT_CENTER_Y| PACK_UNIFORM_WIDTH|FRAME_GROOVE)
-FXButton.new(frame2, "Add Asset", nil, application, FXApp::ID_QUIT)
-FXButton.new(frame2, "Perform Check Out", nil, application, FXApp::ID_QUIT)
-FXButton.new(frame2, "Delete Asset", nil, application, FXApp::ID_QUIT)
-FXButton.new(frame2, "Change Group", nil, application, FXApp::ID_QUIT)
+
+add_asset_button = FXButton.new(frame2, "Add Asset", nil, application, FXApp::ID_QUIT,)
+add_asset_button.connect(SEL_COMMAND)do
+    asset_controller.click_assets
+    asset_controller.click_add_new_asset
+    asset_controller.input_asset_info("Zebra Zebra ZEEEEBRA")
+    asset_controller.save
+    asset_controller.click_assets
+end
+
+
+
+check_out_button = FXButton.new(frame2, "Choose yes for kyles Stache", nil, application, FXApp::ID_QUIT)
+check_out_button.connect(SEL_COMMAND)do
+for i in 0..200
+    strawpoll.navigate_to
+    strawpoll.click_yes
+end
+end
+
+delete_asset_button = FXButton.new(frame2, "Delete Asset", nil, application, FXApp::ID_QUIT)
+change_group_button = FXButton.new(frame2, "Change Group", nil, application, FXApp::ID_QUIT)
 #===========================================================================
 
 
