@@ -1,15 +1,15 @@
-require_relative 'main.rb'
+require_relative 'asset.rb'
+require_relative 'login.rb'
 require 'fox16'
 include Fox
-
-strawpoll = StrawPoll.new
 
 
 #initialize the chrome view, gui, and controllers for a few things
 asset_controller = Asset.new
 application = FXApp.new("FXRuby", "FoxTest")
 
-#Load the image and set to display as logo
+#Load the image and set to display as logo (it's broke commenting out for now)
+=begin
 def getIcon(filename)
     begin
       filename = File.join("icons", filename)
@@ -22,10 +22,11 @@ def getIcon(filename)
       raise RuntimeError, "Couldn't load icon: #{filename}"
     end
 end
+=end
 
    
 
-
+#create the window view
 main = FXMainWindow.new(application, "Asset Panda automated testing suite", nil, nil, DECOR_ALL,
        0, 0, 500, 300)
 
@@ -60,7 +61,7 @@ end
 login_button = FXButton.new(frame4, "Login", nil, application, FXApp::ID_QUIT)
 login_button.connect(SEL_COMMAND)do
     login_controller = Login.new
-    login_controller.login_system($account_email,$password_full)
+    login_controller.login_system($account_email,$password_full,true)
 end
 #=========================================================================
 
@@ -81,13 +82,10 @@ end
 
 
 
-check_out_button = FXButton.new(frame2, "Choose yes for kyles Stache", nil, application, FXApp::ID_QUIT)
+check_out_button = FXButton.new(frame2, "Check Out Item", nil, application, FXApp::ID_QUIT)
 check_out_button.connect(SEL_COMMAND)do
-for i in 0..200
-    strawpoll.navigate_to
-    strawpoll.click_yes
 end
-end
+
 
 delete_asset_button = FXButton.new(frame2, "Delete Asset", nil, application, FXApp::ID_QUIT)
 change_group_button = FXButton.new(frame2, "Change Group", nil, application, FXApp::ID_QUIT)
