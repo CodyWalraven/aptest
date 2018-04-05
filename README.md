@@ -13,6 +13,6 @@ Automated asset panda testing with selenium.
 
 5. Install the fxruby gem with "gem install fxruby"
 
-4. Run main.rb
+4. Run gui.rb
 
-5. P
+5. Party time
