@@ -72,21 +72,20 @@ login_button.connect(SEL_COMMAND)do
 
 
 
-#Buttons to control stuff=================================================
+#second frame in gui
 frame2 = FXHorizontalFrame.new(main,
             LAYOUT_LEFT | LAYOUT_CENTER_Y| PACK_UNIFORM_WIDTH|FRAME_GROOVE)
 
+
+# Add Asset Button
 add_asset_button = FXButton.new(frame2, "Add Asset", nil, application, FXApp::ID_QUIT,)
 add_asset_button.connect(SEL_COMMAND)do
-    asset_controller.click_assets
-    asset_controller.click_add_new_asset
-    asset_controller.input_asset_info("Zebra Zebra ZEEEEBRA")
-    asset_controller.save
-    asset_controller.click_assets
+    asset_controller.full_add_and_save
+   
 end
 
 
-
+#Check out button
 check_out_button = FXButton.new(frame2, "Check Out Item", nil, application, FXApp::ID_QUIT)
 check_out_button.connect(SEL_COMMAND)do
 end

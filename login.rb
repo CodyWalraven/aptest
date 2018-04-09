@@ -14,7 +14,7 @@ class Login
     #If no credentials entered this loads them from email.txt and passwords.txt
     def login_system (email,password,load_from_file)
         if load_from_file == true
-            @password_from_file = File.readlines 'passwords.txt'
+            @password_from_file = File.readlines 'password.txt'
             @password_from_file.each_with_index{|line, i| puts "#{i+1}: #{line}"}
             @email_from_file = File.readlines 'email.txt'
             @email_from_file.each_with_index{|line,i| puts "#{i+1}: #{line}"}
@@ -37,6 +37,8 @@ class Login
         end
     end
 
+
+# This is broken for now because I have to solve a recaptcha to submit password reset
     def reset_password
         $driver.navigate.to "https://login.assetpanda.com/users/password/new"
         @reset_password_text_box = $driver.find_element(name: 'user[email]')
@@ -45,5 +47,6 @@ class Login
         @not_a_robot_button.submit
        
     end
+
 
 end

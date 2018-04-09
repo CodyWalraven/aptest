@@ -1,52 +1,5 @@
 require "selenium-webdriver"
 
-
-#random wait method for now, will put in class later
-
-class TimeCop
-
-    def wait (time)
-        @wait = Selenium::WebDriver::Wait.new(:timeout => time)    
-        puts "Alright we just waited #{time} seconds"
-    end
-
-end
-
-
-
-class Login
-    attr_accessor :email, :password
- 
-    def initialize      
-        $driver = Selenium::WebDriver.for :chrome
-        $driver.navigate.to "https://login.assetpanda.com/asset_items"
-        @login_element = $driver.find_element(name: 'user[email]')
-        @password_element = $driver.find_element(name: 'user[password]')
-        @submit_element = $driver.find_element(name: "commit")               
-    end
-
-    def login_system (email,password)
-        @password_from_file = File.readlines 'passwords.txt'
-        @password_from_file.each_with_index{|line, i| puts "#{i+1}: #{line}"}
-        @email = email
-        @password = password
-        
-        @password_element.send_keys @password
-        @login_element.send_keys email
-        @submit_element.submit
-    end
-
-    def reset_password
-        @reset_link = $driver.find_element(name: '')
-    end
-
-end
-
-
-
-
-
-
 class Asset
     def initialize    
     end
@@ -60,35 +13,46 @@ class Asset
     end
 
     def input_asset_info(name)
+
+        #Read from file and convert the value to a string
+        @last_asset_id = File.readlines 'last_asset_id.txt'
+        @last_asset_id.each_with_index{|line, i| puts "#{i+1}: #{line}"}
+        incremented_asset_id = @last_asset_id.to_s
+
+
+        #Strip off the brackets and quotes so its just the digit for to_i to work right.
+        incremented_asset_id.slice!(0,2)
+        incremented_asset_id.slice!(-1)
+        incremented_asset_id.slice!(-1)
+        incremented_asset_id.lstrip!
+   
+        #Convert the value to an integer, add 1, then save results to the same file
+        incremented_asset_id = incremented_asset_id.to_i
+        incremented_asset_id += 1
+        File.write('last_asset_id.txt', incremented_asset_id)
+
+        #Sent over the information to the Asset id and name field
+        asset_id_field = $driver.find_element(name: 'values[field_1]')
         name_field = $driver.find_element(name: 'values[field_3]')
-        name_field.send_keys(name)   
+        name_field.send_keys(name)
+        asset_id_field.send_keys(incremented_asset_id)   
     end
 
     def save
         #This really just presses enter, but eh it saves the item
         $driver.action.send_keys(:enter).perform
-    
     end
 
-        
+    def full_add_and_save
+        click_assets
+        click_add_new_asset
+        input_asset_info("Test Item")
+        save
+    end
+
 end
 
 
-class StrawPoll
-    def initialize
-        $driver = Selenium::WebDriver.for :chrome
-    end
-
-    def navigate_to
-        $driver.navigate.to "https://www.poll-maker.com/poll1921682x73c44DB0-53#"
-    end
-
-    def click_yes
-        yes_field = $driver.find_element(name: 'qp_v1921682')
-        yes_field.submit
-      
-    end
-end
 
 =begin
 usetrace = Login.new("usetrace@assetpanda.com")
