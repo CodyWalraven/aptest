@@ -9,7 +9,7 @@ Automated asset panda testing with selenium.
 3. Add the chromedriver plugin to your system path      
    https://www.howtogeek.com/118594/how-to-edit-your-system-path-for-easy-command-line-access/
 
-4. Create a passwords.txt in the same directory as main.rb
+4. Create a password.txt in the same directory as main.rb
 
 5. Install the fxruby gem with "gem install fxruby"
 
