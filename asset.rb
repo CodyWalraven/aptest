@@ -14,7 +14,7 @@ class Asset
 
     def input_asset_info(name)
 
-        #Read from file and convert the value to a string
+        #Read last asset id from file and convert the value to a string
         @last_asset_id = File.readlines 'last_asset_id.txt'
         @last_asset_id.each_with_index{|line, i| puts "#{i+1}: #{line}"}
         incremented_asset_id = @last_asset_id.to_s
@@ -31,6 +31,9 @@ class Asset
         incremented_asset_id += 1
         File.write('last_asset_id.txt', incremented_asset_id)
 
+        #Better close that file!
+        File.close
+
         #Sent over the information to the Asset id and name field
         asset_id_field = $driver.find_element(name: 'values[field_1]')
         name_field = $driver.find_element(name: 'values[field_3]')
@@ -44,7 +47,6 @@ class Asset
     end
 
     def full_add_and_save
-        click_assets
         click_add_new_asset
         input_asset_info("Test Item")
         save
@@ -53,21 +55,5 @@ class Asset
 end
 
 
-
-=begin
-usetrace = Login.new("usetrace@assetpanda.com")
-usetrace.login
-
-usetrace_asset = Asset.new
-usetrace_asset.click_assets
-usetrace_asset.click_add_new_asset
-usetrace_asset.input_asset_info("LYNN LOVES chihuahuas")
-usetrace_asset.press_save_button
-usetrace_asset.click_assets
-
-
-puts "Press enter to finish"
-pause = gets.chomp
-=end
 
 
