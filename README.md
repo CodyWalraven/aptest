@@ -1,6 +1,8 @@
 Automated asset panda testing with selenium.
 
 
+-Instructions below for windows only at this time-
+
 1. Install the selenium gem with "gem install selenium-webdriver"
 
 2. Install the chromedriver plugin 
